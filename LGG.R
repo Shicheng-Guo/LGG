@@ -26,6 +26,8 @@ dev.off()
 pdf("LGG_HGG.AMP.SVD.pdf")
 champ.SVD(beta=myNorm,pd=myLoad$pd)
 dev.off()
+
+myNorm <- champ.norm(beta=myLoad$beta,arraytype="450k",cores=1)
 myCombat <- champ.runCombat(beta=myNorm,pd=myLoad$pd,batchname=c("Slide"))
 ##########################################################################
 # don't use all the cores which will easily be killed by system
