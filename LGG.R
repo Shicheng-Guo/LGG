@@ -2,6 +2,27 @@ BiocManager::install("ChAMP")
 BiocManager::install("doParallel") 
 BiocManager::install("benchmarkme") 
 BiocManager::install("DMRcate") 
+BiocManager::install("minfiData")
+BiocManager::install("missMethyl")
+BiocManager::install("minfiData")
+
+library("ChAMP")
+library("ggplot2")
+require("minfi")
+library("knitr")
+library("limma")
+library("minfi")
+library("IlluminaHumanMethylation450kanno.ilmn12.hg19")
+library("IlluminaHumanMethylation450kmanifest")
+library("IlluminaHumanMethylationEPICanno.ilm10b4.hg19")
+library("IlluminaHumanMethylationEPICmanifest")
+library("RColorBrewer")
+library("missMethyl")
+library("minfiData")
+library("Gviz")
+library("DMRcate")
+library("stringr")
+
 
 library("ChAMP")
 library("doParallel")
@@ -14,17 +35,13 @@ RGSet <- read.metharray.exp(targets = targets)
 phenoData <- pData(RGSet)
 manifest <- getManifest(RGSet)
 head(getProbeInfo(manifest))
-
 myNormalRGSet<-preprocessFunnorm(RGSet, nPCs=4, sex = NULL, bgCorr = TRUE,dyeCorr = TRUE, keepCN = TRUE, ratioConvert = TRUE,verbose = TRUE)
 myLoad <- champ.load(Dir,filterBeads=TRUE,arraytype="450k")
+champ.QC(beta = myLoad$beta,resultsDir="./CHAMP_Raw_QCimages/")
 
-# 450k has 411 control probes
-champ.QC()
-##########################################################################
-pdf("LGG_HGG.AMP.SVD.pdf")
-champ.SVD(beta=myNorm,pd=myLoad$pd)
-dev.off()
 myNorm <- champ.norm(beta=myLoad$beta,arraytype="450k",cores=1)
+champ.QC(beta = myNorm,pheno=myLoad$pd$Sample_Group,resultsDir="./CHAMP_Norm_QCimages/")
+
 myCombat <- champ.runCombat(beta=myNorm,pd=myLoad$pd,batchname=c("Slide"))
 ##########################################################################
 # don't use all the cores which will easily be killed by system
@@ -33,6 +50,8 @@ seed=sample(seq(1,10000,by=1),1)
 myNorm <- champ.norm(beta=myLoad$beta,arraytype="450k",cores=1)
 myDMP <- champ.DMP(beta = myNorm,pheno=myLoad$pd$pureG3,compare.group=c("Case","Control"),arraytype="450k")
 write.table(myDMP,file=paste("AtrialFibrillation.",seed,".24Case4Control.myDMP.txt",sep=""),col.names = NA,row.names = T,quote=F,sep="\t")
+
+predictedSex <- getSex(myNormalRGSet, cutoff = -2)$predictedSex
 
 myDMP <- champ.DMP(beta = myNorm,pheno=myLoad$pd$Sample_Group,arraytype="450k")
 write.table(myDMP,file=paste("AtrialFibrillation.",seed,".CaseControl.myDMP.txt",sep=""),col.names = NA,row.names = T,quote=F,sep="\t")
