@@ -14,19 +14,16 @@ RGSet <- read.metharray.exp(targets = targets)
 phenoData <- pData(RGSet)
 manifest <- getManifest(RGSet)
 head(getProbeInfo(manifest))
-myNormalRGSet<-preprocessFunnorm(RGSet, nPCs=4, sex = NULL, bgCorr = TRUE,dyeCorr = TRUE, keepCN = TRUE, ratioConvert = TRUE,verbose = TRUE)
 
+myNormalRGSet<-preprocessFunnorm(RGSet, nPCs=4, sex = NULL, bgCorr = TRUE,dyeCorr = TRUE, keepCN = TRUE, ratioConvert = TRUE,verbose = TRUE)
 myLoad <- champ.load(Dir,filterBeads=TRUE,arraytype="450k")
 
 # 450k has 411 control probes
-pdf("LGG_HGG_AMP_QC.pdf")
 champ.QC()
-dev.off()
 ##########################################################################
 pdf("LGG_HGG.AMP.SVD.pdf")
 champ.SVD(beta=myNorm,pd=myLoad$pd)
 dev.off()
-
 myNorm <- champ.norm(beta=myLoad$beta,arraytype="450k",cores=1)
 myCombat <- champ.runCombat(beta=myNorm,pd=myLoad$pd,batchname=c("Slide"))
 ##########################################################################
