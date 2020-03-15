@@ -24,6 +24,7 @@ library("DMRcate")
 library("stringr")
 library("ChAMP")
 library("doParallel")
+source("https://raw.githubusercontent.com/Shicheng-Guo/GscRbasement/master/mdsPlot.R")
 
 Dir="C:/Users/Schrodi Lab/Documents/GitHub/LGG/extdata"
 setwd("C:/Users/Schrodi Lab/Documents/GitHub/LGG/extdata")
@@ -39,9 +40,16 @@ predictedSex <- getSex(myNormalRGSet, cutoff = -2)$predictedSex
 predictedSex==targets$Gender
 
 myLoad <- champ.load(Dir,filterBeads=TRUE,arraytype="450k")
-mdsPlot(dat=myLoad$beta, legendNCol=1, legendPos="topright",pch=16,numPositions = 10000, sampGroups = myLoad$pd$Sample_Group, colnames(beta))
 myNorm <- champ.norm(beta=myLoad$beta,arraytype="450k",cores=1)
-mdsPlot(dat=myNorm$beta, legendNCol=1, legendPos="topright",pch=16,numPositions = 10000, sampGroups = myLoad$pd$Sample_Group, colnames(beta))
+
+pdf("Figure.S2.MDS.pdf")
+par(mfrow=c(2,2),mar=c(2,3,3,3))
+mdsPlot(dat=myLoad$beta, legendNCol=1, legendPos="topright",pch=16,numPositions = 1000, sampGroups = myLoad$pd$Sample_Group, colnames(beta))
+mdsPlot(dat=myNorm,legendNCol=1, legendPos="topright",pch=16,numPositions = 1000, sampGroups = myLoad$pd$Sample_Group, colnames(beta))
+mdsPlot(dat=myLoad$beta, legendNCol=1, legendPos="topright",pch=16,numPositions = 20000, sampGroups = myLoad$pd$Sample_Group, colnames(beta))
+mdsPlot(dat=myNorm,legendNCol=1, legendPos="topright",pch=16,numPositions = 20000, sampGroups = myLoad$pd$Sample_Group, colnames(beta))
+dev.off()
+
 
 champ.QC(beta = myLoad$beta,resultsDir="../CHAMP_Raw_QCimages/")
 
