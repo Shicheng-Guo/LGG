@@ -35,6 +35,8 @@ phenoData <- pData(RGSet)
 manifest <- getManifest(RGSet)
 head(getProbeInfo(manifest))
 myNormalRGSet<-preprocessFunnorm(RGSet, nPCs=4, sex = NULL, bgCorr = TRUE,dyeCorr = TRUE, keepCN = TRUE, ratioConvert = TRUE,verbose = TRUE)
+predictedSex <- getSex(myNormalRGSet, cutoff = -2)$predictedSex
+
 myLoad <- champ.load(Dir,filterBeads=TRUE,arraytype="450k")
 champ.QC(beta = myLoad$beta,resultsDir="./CHAMP_Raw_QCimages/")
 
@@ -50,7 +52,6 @@ myNorm <- champ.norm(beta=myLoad$beta,arraytype="450k",cores=1)
 myDMP <- champ.DMP(beta = myNorm,pheno=myLoad$pd$pureG3,compare.group=c("Case","Control"),arraytype="450k")
 write.table(myDMP,file=paste("AtrialFibrillation.",seed,".24Case4Control.myDMP.txt",sep=""),col.names = NA,row.names = T,quote=F,sep="\t")
 
-predictedSex <- getSex(myNormalRGSet, cutoff = -2)$predictedSex
 
 myDMP <- champ.DMP(beta = myNorm,pheno=myLoad$pd$Sample_Group,arraytype="450k")
 write.table(myDMP,file=paste("AtrialFibrillation.",seed,".CaseControl.myDMP.txt",sep=""),col.names = NA,row.names = T,quote=F,sep="\t")
