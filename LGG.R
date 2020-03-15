@@ -22,10 +22,9 @@ library("minfiData")
 library("Gviz")
 library("DMRcate")
 library("stringr")
-
-
 library("ChAMP")
 library("doParallel")
+
 Dir="C:/Users/Schrodi Lab/Documents/GitHub/LGG/extdata"
 setwd("C:/Users/Schrodi Lab/Documents/GitHub/LGG/extdata")
 set.seed(11)
