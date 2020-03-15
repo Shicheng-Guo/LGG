@@ -36,9 +36,10 @@ manifest <- getManifest(RGSet)
 head(getProbeInfo(manifest))
 myNormalRGSet<-preprocessFunnorm(RGSet, nPCs=4, sex = NULL, bgCorr = TRUE,dyeCorr = TRUE, keepCN = TRUE, ratioConvert = TRUE,verbose = TRUE)
 predictedSex <- getSex(myNormalRGSet, cutoff = -2)$predictedSex
+predictedSex==targets$Gender
 
 myLoad <- champ.load(Dir,filterBeads=TRUE,arraytype="450k")
-champ.QC(beta = myLoad$beta,resultsDir="./CHAMP_Raw_QCimages/")
+champ.QC(beta = myLoad$beta,resultsDir="../CHAMP_Raw_QCimages/")
 
 myNorm <- champ.norm(beta=myLoad$beta,arraytype="450k",cores=1)
 champ.QC(beta = myNorm,pheno=myLoad$pd$Sample_Group,resultsDir="./CHAMP_Norm_QCimages/")
