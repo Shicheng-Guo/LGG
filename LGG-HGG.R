@@ -62,14 +62,14 @@ RawNARemove<-function(data,missratio=0.3){
 ############################################################################################
 ### Section 2. read the idat
 ############################################################################################
-baseDir="C:\\Users\\shg047\\Documents\\GitHub\\AtrialFibrillation\\idat"
+baseDir="C:/Users/Schrodi Lab/Documents/GitHub/LGG/extdata"
 setwd(baseDir)
 list.files()
 dataDirectory <- baseDir
 list.files(dataDirectory, recursive = TRUE)
 targets <- read.metharray.sheet(baseDir)
 RGset <- read.metharray.exp(base = baseDir, targets = targets)
-pdf("..\\test\\result\\Figure_S1.pdf")
+pdf("..\\Figure_S1.pdf")
 densityPlot(RGset,xlim=c(0,1),sampGroups = RGset$Sample_Group,main = "Beta", xlab = "Beta",cex=0.1)
 detP <- detectionP(RGset)
 pal <- brewer.pal(8,"Dark2")
