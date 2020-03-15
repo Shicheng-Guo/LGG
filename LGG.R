@@ -6,7 +6,7 @@ detectCores()
 
 library("ChAMP")
 library("doParallel")
-Dir="/home/local/MFLDCLIN/guosa/hpc/methylation/Ingrid/MCaldwell-Sept27-17-HuMethEPIC/Raw_Data/idat"
+Dir="C:\\Users\\Schrodi Lab\\Documents\\GitHub\\LGG\\extdata"
 set.seed(11)
 
 targets <- read.metharray.sheet(Dir)
