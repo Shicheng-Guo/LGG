@@ -39,10 +39,14 @@ predictedSex <- getSex(myNormalRGSet, cutoff = -2)$predictedSex
 predictedSex==targets$Gender
 
 myLoad <- champ.load(Dir,filterBeads=TRUE,arraytype="450k")
+mdsPlot(dat=myLoad$beta, legendNCol=1, legendPos="topright",pch=16,numPositions = 10000, sampGroups = myLoad$pd$Sample_Group, colnames(beta))
+myNorm <- champ.norm(beta=myLoad$beta,arraytype="450k",cores=1)
+mdsPlot(dat=myNorm$beta, legendNCol=1, legendPos="topright",pch=16,numPositions = 10000, sampGroups = myLoad$pd$Sample_Group, colnames(beta))
+
 champ.QC(beta = myLoad$beta,resultsDir="../CHAMP_Raw_QCimages/")
 
-myNorm <- champ.norm(beta=myLoad$beta,arraytype="450k",cores=1)
 champ.QC(beta = myNorm,pheno=myLoad$pd$Sample_Group,resultsDir="./CHAMP_Norm_QCimages/")
+
 
 myCombat <- champ.runCombat(beta=myNorm,pd=myLoad$pd,batchname=c("Slide"))
 ##########################################################################
